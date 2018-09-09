@@ -35,7 +35,7 @@ class UJNLibApi(object):
     def __init__(self, *account):
         l = len(account)
         self.base_url = 'https://seat.ujn.edu.cn:8443'
-        # self.base_url = 'http: // 202.194.76.30'
+        # self.base_url = 'http://202.194.76.30'
         self.api = {
             'getToken': 'rest/auth?username={}&password={}',
             'checkToken': 'rest/v2/user/reservations?token={}',
@@ -87,7 +87,7 @@ class UJNLibApi(object):
 
     # # http
     # @staticmethod
-    # def requests_call_http(self, method, url, headers={}, params=None, data=None, stream=False):
+    # def requests_call(method, url, headers={}, params=None, data=None, stream=False):
     #     if method == 'GET':
     #         return requests.get(url, params=params, headers=headers, stream=stream)
     #     elif method == 'POST':
