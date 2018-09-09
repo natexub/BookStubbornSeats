@@ -1,4 +1,4 @@
-# BookHardSeats
+# BookStubbornSeats
 基于[UJN-Lib-Seat-API](https://github.com/iozephyr/UJN-Lib-Seat-API)的图书馆预约
 
 ### 说明
