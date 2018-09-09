@@ -34,19 +34,31 @@ def reserve_one(p, seat, ti):
     p.book(ti[0], ti[1], seat[0], seat[1])
 
 
+# # 多线程登录
+# def login_all(is_tomorrow, lists):
+#     threads_login = []
+#     for per in lists:
+#         for ti in per['times']:
+#             t = threading.Thread(target=login_one, args=(is_tomorrow, ti, per))
+#             threads_login.append(t)
+#     n_threads = range(len(threads_login))
+#     for i in n_threads:
+#         threads_login[i].start()
+#     for i in n_threads:
+#         threads_login[i].join()
 # 多线程登录
 def login_all(is_tomorrow, lists):
     threads_login = []
     for per in lists:
         for ti in per['times']:
-            t = threading.Thread(target=login_one, args=(is_tomorrow, ti, per))
+            t = stackless.tasklet(login_one)(is_tomorrow, ti, per)
             threads_login.append(t)
     n_threads = range(len(threads_login))
-    for i in n_threads:
-        threads_login[i].start()
-    for i in n_threads:
-        threads_login[i].join()
-
+    # stackless.run()
+    # for i in n_threads:
+    #     threads_login[i].start()
+    # for i in n_threads:
+    #     threads_login[i].join()
 
 def wait_to(target_time):
     logging.info("等待到达指定时间...")
