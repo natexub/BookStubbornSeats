@@ -36,10 +36,12 @@ def reserve_one(p, seat, ti):
 # 多线程登录
 def login_all(is_tomorrow, lists):
     threads_login = []
+    i = 0
     for per in lists:
         for ti in per['times']:
-            t = threading.Thread(target=login_one, args=(is_tomorrow, ti, per))
+            t = threading.Thread(target=login_one, name='LoginThread-%s' % i, args=(is_tomorrow, ti, per))
             threads_login.append(t)
+            i += 1
     n_threads = range(len(threads_login))
     for i in n_threads:
         threads_login[i].start()
@@ -77,7 +79,7 @@ def reserve_all(is_tomorrow):
     # 多线程预约
     threads_reserve = []
     for i in range(len(objs)):
-        t = threading.Thread(target=reserve_one, args=(objs[i], seats[i], times[i]))
+        t = threading.Thread(target=reserve_one, name='ReserveThread-%s' % i, args=(objs[i], seats[i], times[i]))
         threads_reserve.append(t)
     n_threads = range(len(threads_reserve))
     for i in n_threads:
