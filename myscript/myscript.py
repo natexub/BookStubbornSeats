@@ -7,7 +7,6 @@ import logging
 import time
 import threading
 
-
 from __init__ import *
 from libapi.login_exception import LoginException
 

@@ -19,7 +19,7 @@
 ### 使用说明
 1. 需要requests模块
 2. 入口在myscript/myscript.py
-
+根据粗略计算,在我的计算机上https方式比http平均慢0.5s.可在
 适用于[济南大学图书馆座位预约](http://seat.ujn.edu.cn/login?targetUri=%2F), 也应该适合其他应用利昂图书馆管理的平台(leosys).
 
 **敬告: 请不要打开牟利的潘多拉盒**

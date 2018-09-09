@@ -17,6 +17,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logging.getLogger("requests").setLevel(logging.WARNING)
 logger = logging.getLogger()
 
+
 class JsonDict(dict):
     """general json object that allows attributes to be bound to and also behaves like a dict"""
 
@@ -34,6 +35,7 @@ class UJNLibApi(object):
     def __init__(self, *account):
         l = len(account)
         self.base_url = 'https://seat.ujn.edu.cn:8443'
+        # self.base_url = 'http: // 202.194.76.30'
         self.api = {
             'getToken': 'rest/auth?username={}&password={}',
             'checkToken': 'rest/v2/user/reservations?token={}',
@@ -73,13 +75,25 @@ class UJNLibApi(object):
 
         return json.loads(json_str, object_hook=_obj_hook)
 
-    def requests_call(self, method, url, headers={}, params=None, data=None, stream=False, verify=False):
-        if (method == 'GET'):
+    # https
+    @staticmethod
+    def requests_call(method, url, headers={}, params=None, data=None, stream=False):
+        if method == 'GET':
             return requests.get(url, params=params, headers=headers, stream=stream, verify=False)
-        elif (method == 'POST'):
+        elif method == 'POST':
             return requests.post(url, params=params, data=data, headers=headers, stream=stream, verify=False)
-        elif (method == 'DELETE'):
+        elif method == 'DELETE':
             return requests.delete(url, params=params, data=data, headers=headers, stream=stream, verify=False)
+
+    # # http
+    # @staticmethod
+    # def requests_call_http(self, method, url, headers={}, params=None, data=None, stream=False):
+    #     if method == 'GET':
+    #         return requests.get(url, params=params, headers=headers, stream=stream)
+    #     elif method == 'POST':
+    #         return requests.post(url, params=params, data=data, headers=headers, stream=stream)
+    #     elif method == 'DELETE':
+    #         return requests.delete(url, params=params, data=data, headers=headers, stream=stream)
 
     def getToken(self):
         # 获取token
