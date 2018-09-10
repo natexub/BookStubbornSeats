@@ -4,8 +4,8 @@ import Queue
 import datetime
 import json
 import logging
-import time
 import threading
+import time
 
 from __init__ import *
 from libapi.login_exception import LoginException
@@ -74,7 +74,7 @@ def reserve_all(is_tomorrow):
         objs.append(unit[0])
         seats.append(unit[1])
         times.append(unit[2])
-    wait_to("05:00:00")
+    wait_to("05:00:03")
 
     # 多线程预约
     threads_reserve = []

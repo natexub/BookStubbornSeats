@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import json
-import urlparse
-import requests
 import logging
 import sys
-from libapi.login_exception import LoginException
+import urlparse
+
+import requests
 import urllib3
+
+from libapi.login_exception import LoginException
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -73,7 +75,12 @@ class UJNLibApi(object):
                 o[str(k)] = v
             return o
 
-        return json.loads(json_str, object_hook=_obj_hook)
+        try:
+            result = json.loads(json_str, object_hook=_obj_hook)
+            return result
+        except ValueError as e:
+            logger.error("%s No JSON object could be decoded: %s" % (self.ac, json_str))
+            raise e
 
     # https
     @staticmethod
