@@ -37,7 +37,7 @@ class ujnlib(UJNLibApi):
 
     def getSeatStartTimeList(self, seat_id):
         # return a list contain tuple for web
-        info = self.getSeatStartTime()
+        info = self.getSeatStartTime(seat_id)
         time_list = []
         for i in info.data.startTimes:
             time_list.append((i.id, i.value))
@@ -69,7 +69,7 @@ class ujnlib(UJNLibApi):
             logger.error('%s: %s' % (self.ac, info.message))
             return False
         else:
-            logger.info('%s%s' % (self.ac, '预约成功'))
+            logger.info('%s%s' % (self.ac, ': 预约成功'))
             return True
 
     def book(self, start_time, end_time, room_id, seat_num):

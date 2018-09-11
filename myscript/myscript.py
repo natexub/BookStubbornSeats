@@ -30,7 +30,9 @@ def login_one(is_tomorrow, ti, seat):
 
 
 def reserve_one(p, seat, ti):
-    p.book(ti[0], ti[1], seat[0], seat[1])
+    if not p.book(ti[0], ti[1], seat[0], seat[1]):
+        logging.info("开始重试...")
+        p.quick(4)
 
 
 # 多线程登录
