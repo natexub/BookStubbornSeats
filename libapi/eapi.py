@@ -107,7 +107,13 @@ class ujnlib(UJNLibApi):
         return [i for i in res if i.stat == 'CHECK_IN' or i.stat == 'RESERVE']
 
     def setDateToday(self):
-        self.setDate('1')
+        try:
+            return self.setDate('1')
+        except ValueError as too_early:
+            return -1
 
     def setDateTomorrow(self):
-        self.setDate('2')
+        try:
+            return self.setDate('2')
+        except ValueError as too_early:
+            return -1

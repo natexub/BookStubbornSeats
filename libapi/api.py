@@ -128,7 +128,6 @@ class UJNLibApi(object):
             return True
 
     def setDate(self, choose):
-
         self.dates = self.getDatetime()
         self.date = self.dates[0]
         # 设置预约日期
