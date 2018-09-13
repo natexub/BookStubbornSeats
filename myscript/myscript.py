@@ -31,6 +31,11 @@ def reserve_one(p, seat, ti, is_tomorrow):
     if is_tomorrow != 1:
         try:
             p.setDateTomorrow()
+            n_max = 50
+            while not p.book(ti[0], ti[1], seat[0], seat[1]) and n_max:
+                logging.info("1s后开始重试...倒数%s次" % n_max)
+                time.sleep(1)
+                n_max -= 1
         except IndexError as exception:
             p.quick(4)
         n_max_0 = 10
@@ -38,11 +43,6 @@ def reserve_one(p, seat, ti, is_tomorrow):
             time.sleep(1)
             n_max_0 -= 1
 
-    n_max = 20
-    while not p.book(ti[0], ti[1], seat[0], seat[1]) and n_max:
-        logging.info("1s后开始重试...倒数%s次" % n_max)
-        time.sleep(1)
-        n_max -= 1
 
 
 
