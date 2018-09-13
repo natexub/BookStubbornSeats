@@ -62,8 +62,7 @@ class UJNLibApi(object):
             self.ac = account[0]
             self.pw = account[1]
         self.token = self.getToken()
-        self.dates = self.getDatetime()
-        self.date = self.dates[0]
+
 
     def parse_json(self, json_str):
         """parse str into JsonDict"""
@@ -76,8 +75,7 @@ class UJNLibApi(object):
             return o
 
         try:
-            result = json.loads(json_str, object_hook=_obj_hook)
-            return result
+            return json.loads(json_str, object_hook=_obj_hook)
         except ValueError as e:
             logger.error("%s No JSON object could be decoded: %s" % (self.ac, json_str))
             raise e
@@ -108,7 +106,11 @@ class UJNLibApi(object):
         param = self.api['getToken'].format(self.ac, self.pw)
         url = urlparse.urljoin(self.base_url, param)
         r = self.requests_call('GET', url)
-        page_json = json.loads(r.text)
+        try:
+            page_json = json.loads(r.text)
+        except ValueError as e:
+            logger.error("%s No JSON object could be decoded: %s" % (self.ac, r.text))
+            raise e
         if page_json['status'] == 'success':
             return page_json['data']['token']
         else:
@@ -126,6 +128,9 @@ class UJNLibApi(object):
             return True
 
     def setDate(self, choose):
+
+        self.dates = self.getDatetime()
+        self.date = self.dates[0]
         # 设置预约日期
         if choose == '2' or choose.lower() == 'y':
             self.date = self.dates[1]
@@ -138,7 +143,11 @@ class UJNLibApi(object):
         url = urlparse.urljoin(self.base_url, param)
         data = {'token': self.token}
         r = self.requests_call('POST', url, data=data)
-        page_json = json.loads(r.text)
+        try:
+            page_json = json.loads(r.text)
+        except ValueError as e:
+            logger.error("%s No JSON object could be decoded: %s" % (self.ac, r.text))
+            raise e
         date = page_json['data']['dates']
         return date
 
