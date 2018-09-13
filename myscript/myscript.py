@@ -19,29 +19,31 @@ def json_file(filename='seat.json'):
     return seats_json
 
 
-def login_one(is_tomorrow, ti, seat):
+def login_one(ti, seat):
     try:
         p = ujnlib(ti['username'], ti['password'])
-        if is_tomorrow != 1:
-            p.setDateTomorrow()
         units.put((p, (seat['room_id'], seat['seat_num']), (ti['begin'], ti['end'])))
     except LoginException as exception:
         logging.error(exception.err)
 
 
-def reserve_one(p, seat, ti):
-    if not p.book(ti[0], ti[1], seat[0], seat[1]):
-        logging.info("开始重试...")
-        p.quick(4)
+def reserve_one(p, seat, ti, is_tomorrow):
+    if is_tomorrow != 1:
+        p.setDateTomorrow()
+    n_max = 10
+    while not p.book(ti[0], ti[1], seat[0], seat[1]) and n_max:
+        logging.info("开始重试...倒数%s次" % n_max)
+        n_max -= 1
+
 
 
 # 多线程登录
-def login_all(is_tomorrow, lists):
+def login_all(lists):
     threads_login = []
     i = 0
     for per in lists:
         for ti in per['times']:
-            t = threading.Thread(target=login_one, name='LoginThread-%s' % i, args=(is_tomorrow, ti, per))
+            t = threading.Thread(target=login_one, name='LoginThread-%s' % i, args=(ti, per))
             threads_login.append(t)
             i += 1
     n_threads = range(len(threads_login))
@@ -68,7 +70,7 @@ def reserve_all(is_tomorrow):
     objs, seats, times = [], [], []
 
     lists = json_file()
-    login_all(is_tomorrow, lists)
+    login_all(lists)
 
     # 将登录所得结果集分开
     while not units.empty():
@@ -76,12 +78,13 @@ def reserve_all(is_tomorrow):
         objs.append(unit[0])
         seats.append(unit[1])
         times.append(unit[2])
-    wait_to("05:00:03")
+    wait_to("05:00:04")
 
     # 多线程预约
     threads_reserve = []
     for i in range(len(objs)):
-        t = threading.Thread(target=reserve_one, name='ReserveThread-%s' % i, args=(objs[i], seats[i], times[i]))
+        t = threading.Thread(target=reserve_one, name='ReserveThread-%s' % i,
+                             args=(objs[i], seats[i], times[i], is_tomorrow))
         threads_reserve.append(t)
     n_threads = range(len(threads_reserve))
     for i in n_threads:
