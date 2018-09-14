@@ -63,7 +63,6 @@ class UJNLibApi(object):
             self.pw = account[1]
         self.token = self.getToken()
 
-
     def parse_json(self, json_str):
         """parse str into JsonDict"""
 

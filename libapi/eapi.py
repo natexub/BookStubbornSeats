@@ -67,7 +67,8 @@ class ujnlib(UJNLibApi):
         info = self.freeBook(start_time, end_time, seat_id)
         if info.status == 'fail':
             logger.error('%s: %s' % (self.ac, info.message))
-            if info.message == '已有1个有效预约，请在使用结束后再次进行选择':
+            if (info.message == '已有1个有效预约，请在使用结束后再次进行选择') \
+                    or (info.message == '预约失败，请尽快选择其他时段或座位'):
                 return True
             else:
                 return False
@@ -77,7 +78,7 @@ class ujnlib(UJNLibApi):
 
     def book(self, start_time, end_time, room_id, seat_num):
         # 预约座位
-        logger.info('%s%s %s-%s' % (self.ac, ': 开始预约', start_time, end_time))
+        logger.info('%s%s %s %s-%s' % (self.ac, ': 开始预约', self.date, start_time, end_time))
         seat_id = self.getSeatId(room_id, seat_num)
         return self.free(start_time, end_time, seat_id)
 
@@ -117,6 +118,7 @@ class ujnlib(UJNLibApi):
 
     def setDateTomorrow(self):
         try:
-            return self.setDate('2')
+            self.setDate('2')
+            return 1
         except Exception as too_early:
             return -1
