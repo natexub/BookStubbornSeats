@@ -1,5 +1,6 @@
-# BookStubbornSeats
+# [Outdated]BookStubbornSeats
 基于[UJN-Lib-Seat-API](https://github.com/iozephyr/UJN-Lib-Seat-API)的图书馆预约
+### 接口应该已改变，作废
 
 ### 说明
 基于风哥的API,进行了功能的扩展, 速度的提升.为了尝试极限速度, 采用[Stackless Python](https://github.com/stackless-dev/stackless/wiki),但是理解不深,发现并不能或者说不适用当前场景,不过放在这慢慢研究.还希望有明白的大佬能给指点指点.
@@ -22,7 +23,7 @@
 2. 入口在myscript/myscript.py
 3. 根据粗略计算,在我的渣机上https方式比http平均慢0.5s.默认方式为https,可在api.py中修改.
 ---
-
+##### 已作废
 ##### 9/11: 
 - __[优化]__ 预约失败采用quickbook补救
 
